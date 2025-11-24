@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logic Gate Toolkit for Proteus 8</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <h1>Logic Gate Toolkit for Proteus 8</h1>
+      <p>Interactive reference for building AND, OR, NAND, NOR, XOR, and NOT circuits in Proteus 8.</p>
+      <button id="toggle-theme" aria-label="Toggle theme">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Input Controls</h2>
+      <div class="input-grid">
+        <label class="toggle">
+          <span>A</span>
+          <input type="checkbox" id="input-a">
+          <span class="slider"></span>
+        </label>
+        <label class="toggle">
+          <span>B</span>
+          <input type="checkbox" id="input-b">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <p class="hint">Flip the inputs to preview gate behavior. NOT only applies to input A.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Live Signal Visualizer</h2>
+      <div class="visualizer">
+        <div class="visualizer__input">
+          <div class="signal" data-pin="A">
+            <span class="signal__label">A</span>
+            <span class="signal__state" id="state-a"></span>
+          </div>
+          <div class="signal" data-pin="B">
+            <span class="signal__label">B</span>
+            <span class="signal__state" id="state-b"></span>
+          </div>
+        </div>
+        <div class="visualizer__gates">
+          <article class="gate" data-gate="and">
+            <h3>AND</h3>
+            <div class="gate__output" id="output-and"></div>
+          </article>
+          <article class="gate" data-gate="or">
+            <h3>OR</h3>
+            <div class="gate__output" id="output-or"></div>
+          </article>
+          <article class="gate" data-gate="nand">
+            <h3>NAND</h3>
+            <div class="gate__output" id="output-nand"></div>
+          </article>
+          <article class="gate" data-gate="nor">
+            <h3>NOR</h3>
+            <div class="gate__output" id="output-nor"></div>
+          </article>
+          <article class="gate" data-gate="xor">
+            <h3>XOR</h3>
+            <div class="gate__output" id="output-xor"></div>
+          </article>
+          <article class="gate" data-gate="not">
+            <h3>NOT (A)</h3>
+            <div class="gate__output" id="output-not"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Truth Tables</h2>
+      <div class="tables">
+        <table>
+          <caption>AND / OR / NAND / NOR / XOR</caption>
+          <thead>
+            <tr>
+              <th>A</th>
+              <th>B</th>
+              <th>AND</th>
+              <th>OR</th>
+              <th>NAND</th>
+              <th>NOR</th>
+              <th>XOR</th>
+            </tr>
+          </thead>
+          <tbody id="truth-table-body"></tbody>
+        </table>
+        <table>
+          <caption>NOT (Input A)</caption>
+          <thead>
+            <tr>
+              <th>A</th>
+              <th>NOT A</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Proteus 8 Build Workflow</h2>
+      <ol class="steps">
+        <li>Launch Proteus 8 and create a new schematic. Name it after the gate you are prototyping.</li>
+        <li>Open the <strong>Pick Devices</strong> dialog and add TTL (74LS) or CMOS (4000 series) gate ICs: 74LS08 (AND), 74LS32 (OR), 74LS00 (NAND), 74LS02 (NOR), 74LS86 (XOR), 74LS04 (NOT).</li>
+        <li>Place the chosen IC on the workspace. Use a dual-rail power supply (VCC = 5V for TTL, 3-15V for CMOS) and connect power (Pin 14) and ground (Pin 7) appropriately.</li>
+        <li>Add SPST switches for inputs A and B. Connect them to VCC via pull-up resistors and to ground through the switch for clean transitions.</li>
+        <li>Wire the switches to the gate inputs. Attach a logic probe, LED with resistor, or virtual oscilloscope to monitor the output pin.</li>
+        <li>For composite circuits, cascade outputs into other gate inputs. Use labeling (net labels) to maintain readability.</li>
+        <li>Enable the simulation, toggle switches, and compare the observed behavior with the live visualizer above to validate the design.</li>
+        <li>Document the wiring with annotations and export the schematic or netlist for future reference.</li>
+      </ol>
+    </section>
+
+    <section class="panel">
+      <h2>Composite Circuit Builder</h2>
+      <form id="builder-form">
+        <label>
+          Gate Sequence (comma separated):
+          <input type="text" id="gate-sequence" placeholder="e.g., AND,OR,NOT">
+        </label>
+        <label>
+          Initial Inputs (binary string for A and B):
+          <input type="text" id="initial-inputs" placeholder="e.g., 10">
+        </label>
+        <button type="submit">Simulate Chain</button>
+      </form>
+      <pre id="builder-output" aria-live="polite"></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>Use this toolkit to plan and validate your Proteus 8 logic gate labs faster.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
